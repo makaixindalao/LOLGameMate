@@ -9,6 +9,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using LOLGameMate.Input;
 
 namespace LOLGameMate.Input.Providers
 {
@@ -17,7 +18,7 @@ namespace LOLGameMate.Input.Providers
     /// 作者: mkx, 日期: 2025-09-16
     /// 修改记录: 2025-09-16 实现完整的 DD 库调用
     /// </summary>
-    public sealed class DDInputProvider : IInputProvider, IDisposable
+    public sealed class DDInputProvider : IDisposable
     {
         private readonly DDWrapper _dd;
         private bool _isInitialized = false;
@@ -29,6 +30,7 @@ namespace LOLGameMate.Input.Providers
 
         /// <summary>
         /// 加载并初始化 DD 库。
+        /// 修改记录: 2025-09-16 mkx 优化初始化流程，避免鼠标卡住
         /// </summary>
         public bool Initialize(string dllPath)
         {
@@ -47,6 +49,9 @@ namespace LOLGameMate.Input.Providers
                     return false;
                 }
 
+                // 等待一小段时间确保初始化完成
+                Thread.Sleep(100);
+
                 _isInitialized = true;
                 return true;
             }
@@ -62,7 +67,7 @@ namespace LOLGameMate.Input.Providers
                 return;
 
             _dd.str(text);
-            Thread.Sleep(30);
+            Thread.Sleep(10); // 减少延时
         }
 
         public void PressTab()
@@ -71,9 +76,9 @@ namespace LOLGameMate.Input.Providers
 
             // Tab 键的 DD 码是 300
             _dd.key(300, 1); // 按下
-            Thread.Sleep(50);
+            Thread.Sleep(20); // 减少延时
             _dd.key(300, 2); // 释放
-            Thread.Sleep(30);
+            Thread.Sleep(10); // 减少延时
         }
 
         public void PressEnter()
@@ -82,9 +87,9 @@ namespace LOLGameMate.Input.Providers
 
             // Enter 键的 DD 码是 284
             _dd.key(284, 1); // 按下
-            Thread.Sleep(50);
+            Thread.Sleep(20); // 减少延时
             _dd.key(284, 2); // 释放
-            Thread.Sleep(30);
+            Thread.Sleep(10); // 减少延时
         }
 
         public void KeyPress(Keys key)
@@ -96,9 +101,9 @@ namespace LOLGameMate.Input.Providers
             if (ddCode > 0)
             {
                 _dd.key(ddCode, 1); // 按下
-                Thread.Sleep(50);
+                Thread.Sleep(20); // 减少延时
                 _dd.key(ddCode, 2); // 释放
-                Thread.Sleep(30);
+                Thread.Sleep(10); // 减少延时
             }
         }
 

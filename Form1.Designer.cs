@@ -34,14 +34,9 @@
             this.txtPass = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblHotkey = new System.Windows.Forms.Label();
+            this.btnHotkeySettings = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.grpInputMode = new System.Windows.Forms.GroupBox();
-            this.rbSendKeys = new System.Windows.Forms.RadioButton();
-            this.rbDD = new System.Windows.Forms.RadioButton();
-            this.btnSelectDD = new System.Windows.Forms.Button();
-            this.txtDDPath = new System.Windows.Forms.TextBox();
-            this.lblDDPath = new System.Windows.Forms.Label();
-            this.grpInputMode.SuspendLayout();
+
             this.SuspendLayout();
             //
             // lblUser
@@ -94,7 +89,17 @@
             this.lblHotkey.Name = "lblHotkey";
             this.lblHotkey.Size = new System.Drawing.Size(200, 17);
             this.lblHotkey.TabIndex = 5;
-            this.lblHotkey.Text = "全局热键: Alt+1 触发自动登录";
+            this.lblHotkey.Text = "全局热键: Ctrl+Alt+Q 触发自动登录";
+            //
+            // btnHotkeySettings
+            //
+            this.btnHotkeySettings.Location = new System.Drawing.Point(326, 100);
+            this.btnHotkeySettings.Name = "btnHotkeySettings";
+            this.btnHotkeySettings.Size = new System.Drawing.Size(68, 25);
+            this.btnHotkeySettings.TabIndex = 8;
+            this.btnHotkeySettings.Text = "设置热键";
+            this.btnHotkeySettings.UseVisualStyleBackColor = true;
+            this.btnHotkeySettings.Click += new System.EventHandler(this.btnHotkeySettings_Click);
             //
             // lblStatus
             //
@@ -105,79 +110,15 @@
             this.lblStatus.Size = new System.Drawing.Size(56, 17);
             this.lblStatus.TabIndex = 6;
             this.lblStatus.Text = "状态: -";
-            //
-            // grpInputMode
-            //
-            this.grpInputMode.Controls.Add(this.rbSendKeys);
-            this.grpInputMode.Controls.Add(this.rbDD);
-            this.grpInputMode.Controls.Add(this.btnSelectDD);
-            this.grpInputMode.Controls.Add(this.txtDDPath);
-            this.grpInputMode.Controls.Add(this.lblDDPath);
-            this.grpInputMode.Location = new System.Drawing.Point(24, 164);
-            this.grpInputMode.Name = "grpInputMode";
-            this.grpInputMode.Size = new System.Drawing.Size(370, 120);
-            this.grpInputMode.TabIndex = 7;
-            this.grpInputMode.TabStop = false;
-            this.grpInputMode.Text = "输入模式";
-            //
-            // rbSendKeys
-            //
-            this.rbSendKeys.AutoSize = true;
-            this.rbSendKeys.Checked = true;
-            this.rbSendKeys.Location = new System.Drawing.Point(16, 24);
-            this.rbSendKeys.Name = "rbSendKeys";
-            this.rbSendKeys.Size = new System.Drawing.Size(139, 21);
-            this.rbSendKeys.TabIndex = 0;
-            this.rbSendKeys.TabStop = true;
-            this.rbSendKeys.Text = "SendKeys (默认)";
-            this.rbSendKeys.UseVisualStyleBackColor = true;
-            this.rbSendKeys.CheckedChanged += new System.EventHandler(this.rbSendKeys_CheckedChanged);
-            //
-            // rbDD
-            //
-            this.rbDD.AutoSize = true;
-            this.rbDD.Location = new System.Drawing.Point(16, 51);
-            this.rbDD.Name = "rbDD";
-            this.rbDD.Size = new System.Drawing.Size(89, 21);
-            this.rbDD.TabIndex = 1;
-            this.rbDD.Text = "DD 驱动";
-            this.rbDD.UseVisualStyleBackColor = true;
-            this.rbDD.CheckedChanged += new System.EventHandler(this.rbDD_CheckedChanged);
-            //
-            // lblDDPath
-            //
-            this.lblDDPath.AutoSize = true;
-            this.lblDDPath.Location = new System.Drawing.Point(16, 78);
-            this.lblDDPath.Name = "lblDDPath";
-            this.lblDDPath.Size = new System.Drawing.Size(68, 17);
-            this.lblDDPath.TabIndex = 2;
-            this.lblDDPath.Text = "DD 库路径:";
-            //
-            // txtDDPath
-            //
-            this.txtDDPath.Location = new System.Drawing.Point(90, 75);
-            this.txtDDPath.Name = "txtDDPath";
-            this.txtDDPath.ReadOnly = true;
-            this.txtDDPath.Size = new System.Drawing.Size(200, 23);
-            this.txtDDPath.TabIndex = 3;
-            //
-            // btnSelectDD
-            //
-            this.btnSelectDD.Location = new System.Drawing.Point(296, 75);
-            this.btnSelectDD.Name = "btnSelectDD";
-            this.btnSelectDD.Size = new System.Drawing.Size(60, 23);
-            this.btnSelectDD.TabIndex = 4;
-            this.btnSelectDD.Text = "选择...";
-            this.btnSelectDD.UseVisualStyleBackColor = true;
-            this.btnSelectDD.Click += new System.EventHandler(this.btnSelectDD_Click);
+
             //
             // Form1
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(420, 300);
-            this.Controls.Add(this.grpInputMode);
+            this.ClientSize = new System.Drawing.Size(420, 180);
             this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.btnHotkeySettings);
             this.Controls.Add(this.lblHotkey);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtPass);
@@ -186,8 +127,6 @@
             this.Controls.Add(this.lblUser);
             this.Name = "Form1";
             this.Text = "LOL Game Mate";
-            this.grpInputMode.ResumeLayout(false);
-            this.grpInputMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -200,12 +139,7 @@
         private System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblHotkey;
+        private System.Windows.Forms.Button btnHotkeySettings;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.GroupBox grpInputMode;
-        private System.Windows.Forms.RadioButton rbSendKeys;
-        private System.Windows.Forms.RadioButton rbDD;
-        private System.Windows.Forms.Button btnSelectDD;
-        private System.Windows.Forms.TextBox txtDDPath;
-        private System.Windows.Forms.Label lblDDPath;
     }
 }
