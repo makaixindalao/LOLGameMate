@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using LOLGameMate.Services;
 using LOLGameMate.Security;
 using LOLGameMate.Input;
+using LOLGameMate.Input.Providers;
 
 namespace LOLGameMate
 {
@@ -17,6 +18,7 @@ namespace LOLGameMate
         private HotkeyManager? _hotkeys;
         private int _alt1Id;
         private readonly CredentialStore _store = new();
+        private DDInputProvider? _ddProvider;
 
         public Form1()
         {
@@ -52,6 +54,9 @@ namespace LOLGameMate
             }
 
             this.FormClosed += Form1_FormClosed;
+
+            // 初始化 DD 相关 UI 状态
+            rbDD.Enabled = false; // 默认禁用，直到成功加载 DD 库
         }
 
         // 修改记录: 2025-09-16 mkx 新增保存按钮点击事件
@@ -97,6 +102,73 @@ namespace LOLGameMate
                 _hotkeys.HotkeyPressed -= OnHotkeyPressed;
                 _hotkeys.Dispose();
                 _hotkeys = null;
+            }
+
+            _ddProvider?.Dispose();
+        }
+
+        // 修改记录: 2025-09-16 mkx 新增输入模式切换事件
+        private void rbSendKeys_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (rbSendKeys.Checked)
+            {
+                KeyboardMouse.SetProvider(new SendKeysInputProvider());
+                lblStatus.Text = "状态: 已切换到 SendKeys 模式";
+            }
+        }
+
+        private void rbDD_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (rbDD.Checked && _ddProvider != null)
+            {
+                KeyboardMouse.SetProvider(_ddProvider);
+                lblStatus.Text = "状态: 已切换到 DD 驱动模式";
+            }
+            else if (rbDD.Checked)
+            {
+                lblStatus.Text = "状态: 请先选择 DD 库文件";
+                rbSendKeys.Checked = true; // 回退到默认模式
+            }
+        }
+
+        // 修改记录: 2025-09-16 mkx 新增 DD 库选择事件
+        private void btnSelectDD_Click(object? sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog
+            {
+                Filter = "DD 库文件|*.dll",
+                Title = "选择 DD 库文件"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    _ddProvider?.Dispose();
+                    _ddProvider = new DDInputProvider();
+
+                    if (_ddProvider.Initialize(ofd.FileName))
+                    {
+                        txtDDPath.Text = ofd.FileName;
+                        lblStatus.Text = "状态: DD 库加载成功";
+                        rbDD.Enabled = true;
+                    }
+                    else
+                    {
+                        lblStatus.Text = "状态: DD 库加载失败";
+                        _ddProvider.Dispose();
+                        _ddProvider = null;
+                        rbDD.Enabled = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblStatus.Text = "状态: DD 库加载异常";
+                    Console.WriteLine(ex);
+                    _ddProvider?.Dispose();
+                    _ddProvider = null;
+                    rbDD.Enabled = false;
+                }
             }
         }
     }
